@@ -1,0 +1,17 @@
+{
+  "trigger": true,
+  "modules": [
+    "captcha-create-challenge"
+  ],
+  "parentResource": "gotobiob1710e9b",
+  "functionName": "gotobiob1710e9bCreateAuthChallenge",
+  "resourceName": "gotobiob1710e9bCreateAuthChallenge",
+  "parentStack": "auth",
+  "triggerEnvs": [],
+  "triggerDir": "/Users/nicholasgriffin/.config/yarn/global/node_modules/@aws-amplify/amplify-category-auth/provider-utils/awscloudformation/triggers/CreateAuthChallenge",
+  "triggerTemplate": "CreateAuthChallenge.json.ejs",
+  "triggerEventPath": "CreateAuthChallenge.event.json",
+  "roleName": "gotobiob1710e9bCreateAuthChallenge",
+  "skipEdit": true,
+  "enableCors": false
+}

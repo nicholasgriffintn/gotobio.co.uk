@@ -9,7 +9,35 @@
       "UnauthRoleName": "amplify-gotobio-dev-141116-unauthRole",
       "StackName": "amplify-gotobio-dev-141116",
       "StackId": "arn:aws:cloudformation:us-east-1:175054299308:stack/amplify-gotobio-dev-141116/87fe92d0-6efa-11ec-9e00-0ecc87e1605b",
-      "AmplifyAppId": "d1s5kwa4k2gm9m"
+      "AmplifyAppId": "d1s5kwa4k2gm9m",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-gotobio-dev-141116-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "gotobiob1710e9b": {}
+      },
+      "function": {
+        "gotobiob1710e9bDefineAuthChallenge": {
+          "deploymentBucketName": "amplify-gotobio-dev-141116-deployment",
+          "s3Key": "amplify-builds/gotobiob1710e9bDefineAuthChallenge-5644556f71775a414158-build.zip"
+        },
+        "gotobiob1710e9bCreateAuthChallenge": {
+          "deploymentBucketName": "amplify-gotobio-dev-141116-deployment",
+          "s3Key": "amplify-builds/gotobiob1710e9bCreateAuthChallenge-74384d41564b33624b69-build.zip"
+        },
+        "gotobiob1710e9bVerifyAuthChallengeResponse": {
+          "RECAPTCHASECRET": "6LfWi-obAAAAADTFtisM7JG6Mb4eK_r9x7tsxF_5",
+          "deploymentBucketName": "amplify-gotobio-dev-141116-deployment",
+          "s3Key": "amplify-builds/gotobiob1710e9bVerifyAuthChallengeResponse-385252442f717543504a-build.zip"
+        },
+        "gotobiob1710e9bCustomMessage": {
+          "REDIRECTURL": "https://gotobio/sign-in",
+          "EMAILSUBJECT": "Please confirm your Go To Bio account",
+          "EMAILMESSAGE": "Please click the link below to confirm your Go To Bio account:",
+          "deploymentBucketName": "amplify-gotobio-dev-141116-deployment",
+          "s3Key": "amplify-builds/gotobiob1710e9bCustomMessage-63596877394e68687151-build.zip"
+        }
+      }
     }
   }
 }

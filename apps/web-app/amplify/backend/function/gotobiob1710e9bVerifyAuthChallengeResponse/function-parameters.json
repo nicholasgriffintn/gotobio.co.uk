@@ -1,0 +1,18 @@
+{
+  "trigger": true,
+  "modules": [
+    "captcha-verify"
+  ],
+  "parentResource": "gotobiob1710e9b",
+  "functionName": "gotobiob1710e9bVerifyAuthChallengeResponse",
+  "resourceName": "gotobiob1710e9bVerifyAuthChallengeResponse",
+  "parentStack": "auth",
+  "triggerEnvs": [],
+  "triggerDir": "/Users/nicholasgriffin/.config/yarn/global/node_modules/@aws-amplify/amplify-category-auth/provider-utils/awscloudformation/triggers/VerifyAuthChallengeResponse",
+  "triggerTemplate": "VerifyAuthChallengeResponse.json.ejs",
+  "triggerEventPath": "VerifyAuthChallengeResponse.event.json",
+  "roleName": "gotobiob1710e9bVerifyAuthChallengeResponse",
+  "skipEdit": true,
+  "RECAPTCHASECRET": "6LfWi-obAAAAADTFtisM7JG6Mb4eK_r9x7tsxF_5",
+  "enableCors": false
+}

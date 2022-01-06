@@ -1,0 +1,26 @@
+{
+  "trigger": true,
+  "modules": [
+    "verification-link"
+  ],
+  "parentResource": "gotobiob1710e9b",
+  "functionName": "gotobiob1710e9bCustomMessage",
+  "resourceName": "gotobiob1710e9bCustomMessage",
+  "parentStack": "auth",
+  "triggerEnvs": [
+    {
+      "key": "RESOURCENAME",
+      "value": "resourceName"
+    }
+  ],
+  "triggerDir": "/Users/nicholasgriffin/.config/yarn/global/node_modules/@aws-amplify/amplify-category-auth/provider-utils/awscloudformation/triggers/CustomMessage",
+  "triggerTemplate": "CustomMessage.json.ejs",
+  "triggerEventPath": "CustomMessage.event.json",
+  "roleName": "gotobiob1710e9bCustomMessage",
+  "skipEdit": true,
+  "REDIRECTURL": "https://gotobio/sign-in",
+  "EMAILSUBJECT": "Please confirm your Go To Bio account",
+  "EMAILMESSAGE": "Please click the link below to confirm your Go To Bio account:",
+  "RESOURCENAME": "resourceName",
+  "enableCors": false
+}
