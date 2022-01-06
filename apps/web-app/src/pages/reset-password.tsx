@@ -3,11 +3,11 @@ import PageLayout from '@/layout/main';
 const HomePage = () => {
   return (
     <PageLayout
-      pageTitle="Register for an account today"
-      pageSummary="Sign up for free today to enhance your social media bio"
+      pageTitle="Reset your Password"
+      pageSummary="Complete the form below to reset your password"
       seo={{
-        title: 'Register for an account today',
-        description: 'Sign up for free today to enhance your social media bio',
+        title: 'Reset your Password',
+        description: 'Complete the form below to reset your password',
       }}
       showBanner={false}
     >

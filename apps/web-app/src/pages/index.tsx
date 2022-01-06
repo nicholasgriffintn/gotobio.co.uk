@@ -4,10 +4,10 @@ const HomePage = () => {
   return (
     <PageLayout
       pageTitle="Connect all of your audiences with just one link"
-      pageSummary="Sign for free today to enhance your social media bio"
+      pageSummary="Sign up for free today to enhance your social media bio"
       seo={{
         title: 'One link to connect all of your audiences',
-        description: 'Sign for free today to enhance your social media bio',
+        description: 'Sign up for free today to enhance your social media bio',
       }}
       pageLink={[
         {

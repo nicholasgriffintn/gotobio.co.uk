@@ -1,15 +1,13 @@
 import PageLayout from '@/layout/main';
-import Link from '@/common/Link';
-import RegisterForm from '@/common/Form/Auth/register';
 
 const HomePage = () => {
   return (
     <PageLayout
-      pageTitle="Register for an account today"
-      pageSummary="Sign up for free today to enhance your social media bio"
+      pageTitle="Manage your Bio"
+      pageSummary="Create and edit your bio"
       seo={{
-        title: 'Register for an account today',
-        description: 'Sign up for free today to enhance your social media bio',
+        title: 'Manage your Bio',
+        description: 'Create and edit your bio',
       }}
       showBanner={false}
     >
@@ -26,7 +24,7 @@ const HomePage = () => {
           lg:px-16
         "
       >
-        <RegisterForm />
+        <h2>Admin Panel stuffs here</h2>
       </section>
     </PageLayout>
   );

@@ -4,11 +4,11 @@ import ConfirmAccountForm from '@/common/Form/Auth/confirmAccount';
 const HomePage = () => {
   return (
     <PageLayout
-      pageTitle="Register for an account today"
-      pageSummary="Sign up for free today to enhance your social media bio"
+      pageTitle="Confirm your Account"
+      pageSummary="Enter the code to confirm your account"
       seo={{
-        title: 'Register for an account today',
-        description: 'Sign up for free today to enhance your social media bio',
+        title: 'Confirm your Account',
+        description: 'Enter the code to confirm your account',
       }}
       showBanner={false}
     >
