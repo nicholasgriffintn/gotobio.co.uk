@@ -17,7 +17,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         <main className="h-full">
           <Component {...pageProps} />
         </main>
-        <Footer />
       </ApolloProvider>
     </SessionProvider>
   );
