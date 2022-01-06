@@ -5,6 +5,7 @@ import { GlobalStyle } from '@/styles/global';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '@/apollo/client';
 import AuthContext from '@/context/AuthContext';
+import { Header } from '@/common/Header';
 
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from '@/aws-exports';
@@ -52,6 +53,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <AuthContext>
       <ApolloProvider client={apolloClient}>
         <GlobalStyle />
+        <Header />
         <main className="h-full">
           <Component {...pageProps} />
         </main>

@@ -1,5 +1,6 @@
 import Iron from '@hapi/iron';
 import { serialize, parse } from 'cookie';
+import { Auth } from 'aws-amplify';
 
 import { TOKEN_NAME, TOKEN_SECRET } from '@/lib/constants';
 
@@ -64,4 +65,24 @@ export async function getLoginSession(req) {
   }
 
   return session;
+}
+
+export async function getCognitoAuthenticatedUser() {
+  try {
+    const user = Auth.currentAuthenticatedUser();
+
+    return user;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function getCognitoSession() {
+  try {
+    const session = Auth.currentSession();
+
+    return session;
+  } catch (e) {
+    console.error(e);
+  }
 }
