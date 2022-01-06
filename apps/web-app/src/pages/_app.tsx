@@ -8,7 +8,7 @@ import AuthContext from '@/context/AuthContext';
 import { Header } from '@/common/Header';
 
 import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from '@/aws-exports';
+import awsconfig from '@/config';
 
 const isLocalhost = process.env.NODE_ENV == 'development';
 
