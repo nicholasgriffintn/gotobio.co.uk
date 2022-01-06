@@ -1,0 +1,9 @@
+require('dotenv').config({ path: '../../.env' });
+const path = require('path');
+
+module.exports = {
+  config: path.resolve('../../packages/db-connector/config', 'index.ts'),
+  'models-path': path.resolve('../../packages/db-connector', 'models'),
+  'seeders-path': path.resolve('../../packages/db-connector', 'seeders'),
+  'migrations-path': path.resolve('../../packages/db-connector', 'migrations'),
+};

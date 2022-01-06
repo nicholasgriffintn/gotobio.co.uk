@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-gotobio-dev-141116-authRole",
+      "UnauthRoleArn": "arn:aws:iam::175054299308:role/amplify-gotobio-dev-141116-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::175054299308:role/amplify-gotobio-dev-141116-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-gotobio-dev-141116-deployment",
+      "UnauthRoleName": "amplify-gotobio-dev-141116-unauthRole",
+      "StackName": "amplify-gotobio-dev-141116",
+      "StackId": "arn:aws:cloudformation:us-east-1:175054299308:stack/amplify-gotobio-dev-141116/87fe92d0-6efa-11ec-9e00-0ecc87e1605b",
+      "AmplifyAppId": "d1s5kwa4k2gm9m"
+    }
+  }
+}

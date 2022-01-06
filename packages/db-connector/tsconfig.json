@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "noUnusedLocals": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "allowJs": true,
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "pretty": true,
+    "inlineSourceMap": true,
+    "inlineSources": true
+  },
+  "exclude": ["node_modules"],
+  "include": ["src/**/*", "test/**/*"]
+}

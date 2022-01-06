@@ -1,0 +1,42 @@
+{
+  "name": "go-to-bio",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=14.13.1",
+    "yarn": ">=1.22.0",
+    "npm": "please-use-yarn"
+  },
+  "scripts": {
+    "dev": "yarn workspace go-to-bio-web-app dev",
+    "start": "yarn workspace go-to-bio-web-app start",
+    "build": "yarn workspace go-to-bio-web-app build",
+    "clean": "yarn workspace go-to-bio-web-app clean",
+    "test": "yarn workspace go-to-bio-web-app test",
+    "fix": "yarn workspace go-to-bio-web-app fix",
+    "typecheck": "yarn workspace go-to-bio-web-app typecheck",
+    "lint": "yarn workspace go-to-bio-web-app lint",
+    "format": "prettier --loglevel warn --write \"**/*.{ts,js,json,jsx,tsx,md,scss}\"",
+    "format:check": "prettier --check \"**/*.{ts,js,json,jsx,tsx,md,scss}\"",
+    "deps:check": "yarn dlx npm-check-updates --configFileName ncurc.yml --deep --dep prod,dev,optional",
+    "deps:update": "yarn dlx npm-check-updates --configFileName ncurc.yml -u --deep --dep prod,dev,optional",
+    "db:migrate:dev": "yarn workspace @bbc/data-force-experimentation-hub-db-connector migrate:dev",
+    "db:migrate:test": "yarn workspace @bbc/data-force-experimentation-hub-db-connector migrate:test",
+    "db:migrate:production": "yarn workspace @bbc/data-force-experimentation-hub-db-connector migrate:production",
+    "db:reset": "yarn workspace @bbc/data-force-experimentation-hub-db-connector reset",
+    "db:seed": "yarn workspace @bbc/data-force-experimentation-hub-db-connector seed:all",
+    "db:seed:undo": "yarn workspace @bbc/data-force-experimentation-hub-db-connector seed:undo",
+    "docker:up": "docker-compose up -d",
+    "docker:up:main-db": "docker-compose up -d main-db",
+    "docker:down": "docker-compose down",
+    "docker:clean": "docker container rm -f $(docker container ls -qa) && docker image rm -f $(docker image ls -q)"
+  },
+  "devDependencies": {
+    "eslint": "8.4.1",
+    "prettier": "2.5.1"
+  }
+}
