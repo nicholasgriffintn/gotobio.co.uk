@@ -98,7 +98,7 @@ const ProfilePage = props => {
                       href={`${
                         network.network === 'facebook'
                           ? `https://www.facebook.com/profile.php?id=${network.username}`
-                          : network.network === 'facebook'
+                          : network.network === 'twitter'
                           ? `https://twitter.com/${network.username}`
                           : ``
                       }`}
