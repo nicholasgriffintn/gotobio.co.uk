@@ -1,24 +1,8 @@
-import { useEffect, useState } from 'react';
-
 import PageLayout from '@/layout/main';
-import { getCognitoAuthenticatedUser } from '@/lib/auth';
+import { useUser } from '@/context/AuthContext';
 
 const HomePage = () => {
-  const [user, setUser] = useState({});
-
-  const retrieveUserData = async (): Promise<void> => {
-    try {
-      const userData = await getCognitoAuthenticatedUser();
-
-      setUser(userData);
-    } catch (error) {
-      console.error('error getting user:', error);
-    }
-  };
-
-  useEffect(() => {
-    retrieveUserData();
-  }, []);
+  const { user } = useUser();
 
   return (
     <PageLayout

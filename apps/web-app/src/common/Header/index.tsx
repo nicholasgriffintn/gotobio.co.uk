@@ -1,44 +1,13 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { gql, useQuery } from '@apollo/client';
+import { useState } from 'react';
 
-import { getCognitoAuthenticatedUser } from '@/lib/auth';
-
-const ViewerQuery = gql`
-  query ViewerQuery {
-    viewer {
-      id
-      email
-    }
-  }
-`;
+import { useUser } from '@/context/AuthContext';
 
 export const Header = () => {
   const [show2, setShow2] = useState(false);
 
-  const [user, setUser] = useState<{
-    username?: string;
-    attributes: {
-      picture?: string;
-      email?: string;
-    };
-  }>({ attributes: {} });
+  const { user } = useUser();
 
-  const retrieveUserData = async (): Promise<void> => {
-    try {
-      const userData = await getCognitoAuthenticatedUser();
-
-      setUser(userData);
-    } catch (error) {
-      console.error('error getting user:', error);
-    }
-  };
-
-  useEffect(() => {
-    retrieveUserData();
-  }, []);
-
-  if (!user || !user.username) {
+  if (!user) {
     return <></>;
   }
 
