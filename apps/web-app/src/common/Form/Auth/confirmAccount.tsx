@@ -49,14 +49,18 @@ export default function ConfirmAccountForm({
         try {
           await Auth.signIn(data.username, passedThroughPassword);
         } catch (error) {
-          setErrorMessage(error.message);
+          if (error instanceof Error) {
+            setErrorMessage(error?.message);
+          }
           setShowError(true);
         }
       }
 
       router.push(`/sign-in`);
     } catch (error) {
-      setErrorMessage(error.message);
+      if (error instanceof Error) {
+        setErrorMessage(error?.message);
+      }
       setShowError(true);
     }
   };

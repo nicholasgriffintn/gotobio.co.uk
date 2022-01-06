@@ -34,7 +34,9 @@ export default function RegisterForm() {
       return user;
     } catch (error) {
       console.error('error signing up:', error);
-      setErrorMessage(error.message);
+      if (error instanceof Error) {
+        setErrorMessage(error?.message);
+      }
       return null;
     }
   };
@@ -80,7 +82,6 @@ export default function RegisterForm() {
             </label>
             <input
               type="text"
-              name="username"
               id="username"
               className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
               placeholder="yourusername"
@@ -96,7 +97,6 @@ export default function RegisterForm() {
             </label>
             <input
               type="email"
-              name="email"
               id="email"
               className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
               placeholder="email@gotobio.com"
@@ -112,7 +112,6 @@ export default function RegisterForm() {
             </label>
             <input
               type="password"
-              name="password"
               id="password"
               className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
               placeholder="Keep it secret, keep it safe!"

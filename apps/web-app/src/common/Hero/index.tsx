@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 type Props = {
   image?: string;
@@ -45,9 +45,9 @@ export const Hero = ({
               </div>
               {link && link.length > 0 ? (
                 <div className="flex w-full max-w-2xl gap-2 mt-6 lg:justify-center lg:mx-auto">
-                  {link.map(options => {
+                  {link.map((options, index) => {
                     return (
-                      <>
+                      <React.Fragment key={`hero-link-${index}`}>
                         {options.type === 'primary' ? (
                           <div className="my-3 rounded-lg sm:mt-0">
                             <a
@@ -87,7 +87,7 @@ export const Hero = ({
                             </a>
                           </div>
                         )}
-                      </>
+                      </React.Fragment>
                     );
                   })}
                 </div>

@@ -24,7 +24,9 @@ export default function SignInForm() {
       return user;
     } catch (error) {
       console.error('error signing up:', error);
-      setErrorMessage(error.message);
+      if (error instanceof Error) {
+        setErrorMessage(error?.message);
+      }
     }
   };
 
