@@ -1,1 +1,1 @@
-# Course Finder
+# App By Nicholas Griffin
