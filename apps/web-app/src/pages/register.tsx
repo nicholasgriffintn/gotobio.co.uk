@@ -1,4 +1,5 @@
 import PageLayout from '@/layout/main';
+import Link from '@/common/Link';
 
 const HomePage = () => {
   return (
@@ -205,13 +206,13 @@ const HomePage = () => {
           </form>
           <p className="mx-auto mt-3 text-xs text-center text-santa">
             You acknowledge that you read and agree with Go To Bio&apos;s{' '}
-            <a className="text-moody hover:text-white" href="/terms">
-              Terms of Service
-            </a>{' '}
+            <Link href="/terms">
+              <a className="text-moody hover:text-white">Terms of Service</a>
+            </Link>{' '}
             and and{' '}
-            <a className="text-moody hover:text-white" href="/privacy">
-              Privacy Policy.
-            </a>
+            <Link href="/privacy">
+              <a className="text-moody hover:text-white">Privacy Policy.</a>
+            </Link>
           </p>
         </div>
       </section>

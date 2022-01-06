@@ -26,8 +26,20 @@ const ProfilePage = props => {
       }}
       showBanner={false}
     >
+      {profile.background ? (
+        <section
+          className="w-full h-screen fixed bg-center bg-cover bg-no-repeat"
+          style={{
+            backgroundImage: profile.backgroundOpacity
+              ? `linear-gradient(rgb(46 45 46 / 60%), rgb(48 47 48 / 40%)), url(${profile.background})`
+              : `url(${profile.background})`,
+          }}
+        ></section>
+      ) : null}
       <section
         className="
+        relative
+        z-30
           flex
           items-center
           justify-center
@@ -187,6 +199,7 @@ export async function getServerSideProps({ params }) {
                 'https://pbs.twimg.com/profile_images/1468372517538701316/HnQ_WZVg_400x400.jpg',
               background:
                 'https://pbs.twimg.com/profile_banners/353849936/1638917863/1500x500',
+              backgroundOpacity: true,
               title: 'Nicholas Griffin',
               bio: 'Senior Software Engineer at the BBC and Full Time Technology Nerd/ Boomer. All opinions are my own.',
               links: [
