@@ -13,21 +13,21 @@ const ProfileComponent = ({ profile }) => {
       ) : null}
       <section
         className="
-        relative
-        z-30
+          relative
+          z-30
           flex
           items-center
           justify-center
           h-screen
           min-h-full
           px-4
-          py-6
-          sm:px-6
-          lg:px-16
+          lg:px-6
+          pb-32
+          md:pb-0
         "
       >
-        <div className="w-full max-w-md space-y-8">
-          <div>
+        <div className="w-full max-w-md space-y-4">
+          <div className="pt-32 md:pt-0">
             <div className="w-full text-center mb-4">
               <img
                 className="w-24 h-24 m-auto rounded-full ring-4 ring-cinder"
@@ -154,6 +154,14 @@ const ProfileComponent = ({ profile }) => {
           ) : null}
         </div>
       </section>
+      {/* <div className="z-50 absolute bottom-0 left-0 w-full pb-4 pt-4 px-4 py-6 sm:px-2 lg:px-6">
+        <a
+          className="w-full inline-block items-center text-base font-medium text-center text-white"
+          href="https://gotobio.co.uk"
+        >
+          <span>Click here to create your Go To Bio link today!</span>
+        </a>
+      </div> */}
     </div>
   );
 };
