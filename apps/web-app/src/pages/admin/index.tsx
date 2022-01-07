@@ -1,13 +1,62 @@
+import { useState, useEffect } from 'react';
+import { Logger } from '@aws-amplify/core';
+import Storage from '@aws-amplify/storage';
+
 import PageLayout from '@/layout/main';
 import { useUser } from '@/context/AuthContext';
 import ProfileComponent from '@/common/Profile';
 
 const AdminPage = () => {
+  const logger = new Logger('admin');
+
   const { user } = useUser();
+
+  const [avatar, setAvatar] = useState('');
+  const [name, setName] = useState('');
+  const [location, setLocation] = useState('');
+  const [headline, setHeadline] = useState('');
+  const [bio, setBio] = useState('');
+
+  useEffect(() => {
+    if (user) {
+      setAvatar(
+        user?.attributes?.picture
+          ? user.attributes.picture
+          : user?.attributes?.email
+          ? `https://www.gravatar.com/avatar/${user.attributes.email}`
+          : `https://eu.ui-avatars.com/api/?name=${user.username}`,
+      );
+      setName(user?.attributes?.name || '');
+      setLocation(user?.attributes?.address || '');
+      setHeadline(user?.attributes?.headline || '');
+      setBio(user?.attributes?.bio || '');
+    }
+  }, [user]);
 
   if (!user || !user.username) {
     return <></>;
   }
+
+  const uploadImage = event => {
+    if (event?.target?.files?.length > 0) {
+      Storage.configure({
+        level: 'protected',
+      });
+      Storage.put(`avatars/${user.username}`, event.target.files[0], {
+        contentType: event.target.files[0].type,
+      })
+        .then(async result => {
+          console.log(result);
+
+          const signedURL = await Storage.get(result.key);
+
+          setAvatar(signedURL);
+        })
+        .catch(err => {
+          logger.error(`Cannot uploading file: ${err}`);
+        });
+    }
+  };
 
   return (
     <PageLayout
@@ -23,116 +72,15 @@ const AdminPage = () => {
         <div className="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-20">
           <div className="space-y-4 overflow-hidden lg:p-6 bg-cinder rounded-3xl">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
-              <div className="relative hidden overflow-hidden bg-pearl rounded-2xl lg:block">
-                <ProfileComponent
-                  profile={{
-                    username: user.username,
-                    fullname: user?.attributes?.name,
-                    avatar: user?.attributes?.picture
-                      ? user.attributes.picture
-                      : user?.attributes?.email
-                      ? `https://www.gravatar.com/avatar/${user.attributes.email}`
-                      : `https://eu.ui-avatars.com/api/?name=${user.username}`,
-                    background:
-                      'https://pbs.twimg.com/profile_banners/353849936/1638917863/1500x500',
-                    backgroundOpacity: true,
-                    headline: 'Nicholas Griffin',
-                    bio: 'Senior Software Engineer at the BBC and Full Time Technology Nerd/ Boomer. All opinions are my own.',
-                    links: [
-                      {
-                        href: 'https://nicholasgriffin.dev',
-                        title: 'Personal Site',
-                        external: true,
-                        type: 'primary',
-                      },
-                      {
-                        href: 'https://nicholasgriffin.dev/projects',
-                        title: 'Projects',
-                        external: true,
-                        type: 'secondary',
-                      },
-                      {
-                        href: 'https://nicholasgriffin.dev/blog',
-                        title: 'Blog',
-                        external: true,
-                        type: 'secondary',
-                      },
-                    ],
-                    social: [
-                      {
-                        username: 'ngriffin_uk',
-                        external: true,
-                        network: 'twitter',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'facebook',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'whatsapp',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'linkedin',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'telegram',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'reddit',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'pinterest',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'instagram',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'youtube',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'twitch',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'email',
-                      },
-                    ],
-                  }}
-                />
-              </div>
               <div className="col-span-3 space-y-6">
-                <div className="max-h-screen overflow-scroll">
+                <div className="max-h-auto lg:max-h-screen overflow-visible lg:overflow-scroll">
                   <div className="p-6 space-y-8 bg-pearl rounded-2xl">
                     <div className="flex flex-col items-center space-y-6 lg:space-y-0 lg:flex-row">
                       <div className="relative overflow-hidden rounded-full">
                         <img
                           className="relative w-20 h-20 rounded-full"
-                          src={
-                            user?.attributes?.picture
-                              ? user.attributes.picture
-                              : user?.attributes?.email
-                              ? `https://www.gravatar.com/avatar/${user.attributes.email}`
-                              : `https://eu.ui-avatars.com/api/?name=${user.username}`
-                          }
-                          alt={user?.attributes?.name || user.username}
+                          src={avatar}
+                          alt={name || user.username}
                         />
                         <label
                           htmlFor="desktop-user-photo"
@@ -144,6 +92,7 @@ const AdminPage = () => {
                             type="file"
                             id="desktop-user-photo"
                             name="user-photo"
+                            onChange={uploadImage}
                             className="absolute inset-0 w-full h-full border-gray-300 rounded-md opacity-0 cursor-pointer "
                           />
                         </label>
@@ -161,6 +110,7 @@ const AdminPage = () => {
                           type="text"
                           name="name"
                           id="name"
+                          defaultValue={name}
                           className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
                           placeholder="Your Full Name"
                         />
@@ -182,6 +132,7 @@ const AdminPage = () => {
                           type="text"
                           name="address"
                           id="address"
+                          defaultValue={location}
                           className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
                           placeholder="Your Location"
                         />
@@ -199,6 +150,7 @@ const AdminPage = () => {
                           type="text"
                           name="headline"
                           id="headline"
+                          defaultValue={headline}
                           className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
                           placeholder="Profile Headline"
                         />
@@ -217,11 +169,12 @@ const AdminPage = () => {
                           <span>Bio</span>
                         </label>
                         <textarea
-                          className="block w-full h-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
                           id="bio"
                           name="bio"
                           placeholder="Bio..."
                           required={true}
+                          defaultValue={bio}
                         ></textarea>
                       </div>
                       <span className="text-xs text-santa">
@@ -390,6 +343,98 @@ const AdminPage = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div className="relative hidden overflow-hidden bg-pearl rounded-2xl lg:block">
+                <ProfileComponent
+                  profile={{
+                    username: user.username,
+                    fullname: name,
+                    avatar,
+                    background:
+                      'https://pbs.twimg.com/profile_banners/353849936/1638917863/1500x500',
+                    backgroundOpacity: true,
+                    headline,
+                    bio,
+                    links: [
+                      {
+                        href: 'https://nicholasgriffin.dev',
+                        title: 'Personal Site',
+                        external: true,
+                        type: 'primary',
+                      },
+                      {
+                        href: 'https://nicholasgriffin.dev/projects',
+                        title: 'Projects',
+                        external: true,
+                        type: 'secondary',
+                      },
+                      {
+                        href: 'https://nicholasgriffin.dev/blog',
+                        title: 'Blog',
+                        external: true,
+                        type: 'secondary',
+                      },
+                    ],
+                    social: [
+                      {
+                        username: 'ngriffin_uk',
+                        external: true,
+                        network: 'twitter',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'facebook',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'whatsapp',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'linkedin',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'telegram',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'reddit',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'pinterest',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'instagram',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'youtube',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'twitch',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'email',
+                      },
+                    ],
+                  }}
+                />
               </div>
             </div>
           </div>

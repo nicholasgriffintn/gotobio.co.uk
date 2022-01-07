@@ -1,7 +1,7 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import { createContext, useContext } from 'react';
 import Auth from '@aws-amplify/auth';
-import { Hub } from 'aws-amplify';
+import { Hub } from '@aws-amplify/core';
 import { CognitoUserExt } from '../types/UserAttributes';
 
 type UserContextType = {

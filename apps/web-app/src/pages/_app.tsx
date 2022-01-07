@@ -1,8 +1,7 @@
 import 'tailwindcss/tailwind.css';
 import type { AppProps } from 'next/app';
 import Auth from '@aws-amplify/auth';
-import { Logger } from '@aws-amplify/core';
-import Amplify from 'aws-amplify';
+import Amplify, { Logger } from '@aws-amplify/core';
 
 import { GlobalStyle } from '@/styles/global';
 import { ApolloProvider } from '@apollo/client';
