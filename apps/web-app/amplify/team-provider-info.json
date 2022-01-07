@@ -14,7 +14,8 @@
     },
     "categories": {
       "auth": {
-        "gotobiob1710e9b": {}
+        "gotobiob1710e9b": {},
+        "true": {}
       },
       "function": {
         "gotobiob1710e9bDefineAuthChallenge": {

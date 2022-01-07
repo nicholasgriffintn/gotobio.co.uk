@@ -1,6 +1,6 @@
 import Iron from '@hapi/iron';
 import { serialize, parse } from 'cookie';
-import { Auth } from 'aws-amplify';
+import Auth from '@aws-amplify/auth';
 
 import { TOKEN_NAME, TOKEN_SECRET } from '@/lib/constants';
 

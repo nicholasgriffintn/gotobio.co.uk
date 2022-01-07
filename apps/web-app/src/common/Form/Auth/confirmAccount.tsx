@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import { Auth } from 'aws-amplify';
+import Auth from '@aws-amplify/auth';
 import AuthError from './error';
 
 interface VerifyInput {

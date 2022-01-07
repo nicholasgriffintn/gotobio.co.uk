@@ -12,7 +12,7 @@ export const Header = () => {
   }
 
   return (
-    <header className="text-gray-600 body-font absolute top-0 left-0 w-full z-20">
+    <header className="text-gray-600 body-font absolute top-0 left-0 w-full z-50">
       <div className="container mx-auto flex flex-wrap pt-2 pb-2 flex-col md:flex-row items-center">
         <nav className="menu w-full hidden lg:block flex-grow lg:flex lg:items-center lg:w-auto lg:px-3 px-8">
           <div className="text-md font-bold text-indigo-900 lg:flex-grow"></div>
@@ -104,15 +104,15 @@ export const Header = () => {
                       </ul>
                     )}
                     <div
-                      className="cursor-pointer text-light-gray"
+                      className="cursor-pointer text-white"
                       onClick={() => setShow2(!show2)}
                     >
                       {show2 ? (
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className=" icon icon-tabler icon-tabler-chevron-up"
-                          width={20}
-                          height={20}
+                          width={18}
+                          height={18}
                           viewBox="0 0 24 24"
                           strokeWidth="1.5"
                           stroke="currentColor"

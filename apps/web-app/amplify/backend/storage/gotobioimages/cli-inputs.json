@@ -1,0 +1,14 @@
+{
+  "resourceName": "gotobioimages",
+  "policyUUID": "36ef50e7",
+  "bucketName": "gottobioimages",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ"
+  ],
+  "groupAccess": {}
+}

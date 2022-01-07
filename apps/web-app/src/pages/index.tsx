@@ -6,8 +6,16 @@ const HomePage = () => {
 
   return (
     <PageLayout
-      pageTitle="Connect all of your audiences with just one link"
-      pageSummary="Sign up for free today to enhance your social media bio"
+      pageTitle={
+        !user
+          ? 'Connect all of your audiences with just one link'
+          : `Welcome back ${user.username}!`
+      }
+      pageSummary={
+        !user
+          ? 'Sign up for free today to enhance your social media bio'
+          : 'Here are some useful links:'
+      }
       seo={{
         title: 'One link to connect all of your audiences',
         description: 'Sign up for free today to enhance your social media bio',
@@ -33,6 +41,12 @@ const HomePage = () => {
                 href: '/admin',
                 text: 'Admin',
                 type: 'primary',
+                external: false,
+              },
+              {
+                href: `/p/${user.username}`,
+                text: 'Public Bio',
+                type: 'secondary',
                 external: false,
               },
             ]

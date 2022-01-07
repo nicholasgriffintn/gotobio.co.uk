@@ -7,7 +7,8 @@ import { useApollo } from '@/apollo/client';
 import AuthContext from '@/context/AuthContext';
 import { Header } from '@/common/Header';
 
-import Amplify, { Auth } from 'aws-amplify';
+import Auth from '@aws-amplify/auth';
+import Amplify from 'aws-amplify';
 import awsconfig from '@/config';
 
 const isLocalhost = process.env.NODE_ENV == 'development';

@@ -35,5 +35,11 @@ export type AmplifyDependentResourcesAttributes = {
             "AppClientIDWeb": "string",
             "AppClientID": "string"
         }
+    },
+    "storage": {
+        "gotobioimages": {
+            "BucketName": "string",
+            "Region": "string"
+        }
     }
 }
