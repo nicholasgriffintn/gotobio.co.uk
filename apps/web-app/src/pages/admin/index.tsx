@@ -12,10 +12,37 @@ const AdminPage = () => {
   const { user } = useUser();
 
   const [avatar, setAvatar] = useState('');
+  const [background, setBackground] = useState(
+    'https://pbs.twimg.com/profile_banners/353849936/1638917863/1500x500',
+  );
+  const [backgroundOpacity, setBackgroundOpacity] = useState(true);
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
   const [headline, setHeadline] = useState('');
   const [bio, setBio] = useState('');
+
+  const [links, setLinks] = useState([]);
+
+  const [socials, setSocials] = useState<
+    {
+      username?: string;
+      external?: boolean;
+      network?: string;
+    }[]
+  >([]);
+
+  const [email, setEmail] = useState('');
+  const [facebook, setFacebook] = useState('');
+  const [instagram, setInstagram] = useState('');
+  const [twitter, setTwitter] = useState('');
+  const [youtube, setYoutube] = useState('');
+  const [linkedin, setLinkedin] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
+  const [telegram, setTelegram] = useState('');
+  const [signal, setSignal] = useState('');
+  const [twitch, setTwitch] = useState('');
+  const [pinterest, setPinterest] = useState('');
+  const [tiktok, setTiktok] = useState('');
 
   useEffect(() => {
     if (user) {
@@ -26,18 +53,178 @@ const AdminPage = () => {
           ? `https://www.gravatar.com/avatar/${user.attributes.email}`
           : `https://eu.ui-avatars.com/api/?name=${user.username}`,
       );
+      setBackground(
+        user?.attributes?.background ||
+          'https://pbs.twimg.com/profile_banners/353849936/1638917863/1500x500',
+      );
+      setBackgroundOpacity(
+        user?.attributes?.backgroundOpacity
+          ? Boolean(user.attributes.backgroundOpacity)
+          : true,
+      );
       setName(user?.attributes?.name || '');
       setLocation(user?.attributes?.address || '');
       setHeadline(user?.attributes?.headline || '');
       setBio(user?.attributes?.bio || '');
+
+      setLinks(
+        user?.attributes?.links
+          ? JSON.parse(user.attributes.links)
+          : [
+              {
+                href: 'https://nicholasgriffin.dev',
+                title: 'Personal Site',
+                external: true,
+                type: 'primary',
+              },
+              {
+                href: 'https://nicholasgriffin.dev/projects',
+                title: 'Projects',
+                external: true,
+                type: 'secondary',
+              },
+              {
+                href: 'https://nicholasgriffin.dev/blog',
+                title: 'Blog',
+                external: true,
+                type: 'secondary',
+              },
+            ],
+      );
+
+      setEmail(user?.attributes?.email || '');
+      setInstagram(user?.attributes?.instagram || '');
+      setTwitter(user?.attributes?.twitter || '');
+      setYoutube(user?.attributes?.youtube || '');
+      setLinkedin(user?.attributes?.linkedin || '');
+      setWhatsapp(user?.attributes?.whatsapp || '');
+      setTelegram(user?.attributes?.telegram || '');
+      setSignal(user?.attributes?.signal || '');
+      setTwitch(user?.attributes?.twitch || '');
+      setPinterest(user?.attributes?.pinterest || '');
+      setTiktok(user?.attributes?.tiktok || '');
     }
   }, [user]);
+
+  useEffect(() => {
+    const newSocials: {
+      username?: string;
+      external?: boolean;
+      network?: string;
+    }[] = [];
+
+    const defaultSocialObject = {
+      username: null,
+      external: true,
+      network: null,
+    };
+
+    if (email) {
+      newSocials.push({
+        ...defaultSocialObject,
+        username: email,
+        network: 'email',
+      });
+    }
+    if (facebook) {
+      newSocials.push({
+        ...defaultSocialObject,
+        username: facebook,
+        network: 'facebook',
+      });
+    }
+    if (instagram) {
+      newSocials.push({
+        ...defaultSocialObject,
+        username: instagram,
+        network: 'instagram',
+      });
+    }
+    if (twitter) {
+      newSocials.push({
+        ...defaultSocialObject,
+        username: twitter,
+        network: 'twitter',
+      });
+    }
+    if (youtube) {
+      newSocials.push({
+        ...defaultSocialObject,
+        username: youtube,
+        network: 'youtube',
+      });
+    }
+    if (linkedin) {
+      newSocials.push({
+        ...defaultSocialObject,
+        username: linkedin,
+        network: 'linkedin',
+      });
+    }
+    if (whatsapp) {
+      newSocials.push({
+        ...defaultSocialObject,
+        username: whatsapp,
+        network: 'whatsapp',
+      });
+    }
+    if (telegram) {
+      newSocials.push({
+        ...defaultSocialObject,
+        username: telegram,
+        network: 'telegram',
+      });
+    }
+    if (signal) {
+      newSocials.push({
+        ...defaultSocialObject,
+        username: signal,
+        network: 'signal',
+      });
+    }
+    if (twitch) {
+      newSocials.push({
+        ...defaultSocialObject,
+        username: twitch,
+        network: 'twitch',
+      });
+    }
+    if (pinterest) {
+      newSocials.push({
+        ...defaultSocialObject,
+        username: pinterest,
+        network: 'pinterest',
+      });
+    }
+    if (tiktok) {
+      newSocials.push({
+        ...defaultSocialObject,
+        username: tiktok,
+        network: 'tiktok',
+      });
+    }
+
+    setSocials(newSocials);
+  }, [
+    email,
+    facebook,
+    instagram,
+    twitter,
+    youtube,
+    linkedin,
+    whatsapp,
+    telegram,
+    signal,
+    twitch,
+    pinterest,
+    tiktok,
+  ]);
 
   if (!user || !user.username) {
     return <></>;
   }
 
-  const uploadImage = event => {
+  const uploadAvatar = event => {
     if (event?.target?.files?.length > 0) {
       Storage.configure({
         level: 'protected',
@@ -51,6 +238,27 @@ const AdminPage = () => {
           const signedURL = await Storage.get(result.key);
 
           setAvatar(signedURL);
+        })
+        .catch(err => {
+          logger.error(`Cannot uploading file: ${err}`);
+        });
+    }
+  };
+
+  const uploadBackground = event => {
+    if (event?.target?.files?.length > 0) {
+      Storage.configure({
+        level: 'protected',
+      });
+      Storage.put(`backgrounds/${user.username}`, event.target.files[0], {
+        contentType: event.target.files[0].type,
+      })
+        .then(async result => {
+          console.log(result);
+
+          const signedURL = await Storage.get(result.key);
+
+          setBackground(signedURL);
         })
         .catch(err => {
           logger.error(`Cannot uploading file: ${err}`);
@@ -75,27 +283,94 @@ const AdminPage = () => {
               <div className="col-span-3 space-y-6">
                 <div className="max-h-auto lg:max-h-screen overflow-visible lg:overflow-scroll">
                   <div className="p-6 space-y-8 bg-pearl rounded-2xl">
-                    <div className="flex flex-col items-center space-y-6 lg:space-y-0 lg:flex-row">
-                      <div className="relative overflow-hidden rounded-full">
-                        <img
-                          className="relative w-20 h-20 rounded-full"
-                          src={avatar}
-                          alt={name || user.username}
-                        />
+                    <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                      <div>
                         <label
                           htmlFor="desktop-user-photo"
-                          className="absolute inset-0 flex items-center justify-center w-full h-full text-sm font-medium text-white bg-opacity-75 opacity-0 bg-pearl hover:opacity-100 focus-within:opacity-100"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
                         >
-                          <span>Change</span>
-                          <span className="sr-only"> user photo</span>
-                          <input
-                            type="file"
-                            id="desktop-user-photo"
-                            name="user-photo"
-                            onChange={uploadImage}
-                            className="absolute inset-0 w-full h-full border-gray-300 rounded-md opacity-0 cursor-pointer "
-                          />
+                          Avatar
                         </label>
+                      </div>
+                      <div className="flex flex-col items-center space-y-6 lg:space-y-0 lg:flex-row">
+                        <div className="relative overflow-hidden  pt-4 pb-4 rounded-full">
+                          <img
+                            className="relative w-20 h-20 rounded-full"
+                            src={avatar}
+                            alt={name || user.username}
+                          />
+                          <label
+                            htmlFor="desktop-user-photo"
+                            className="absolute inset-0 flex items-center justify-center w-full h-full text-sm font-medium text-white bg-opacity-75 opacity-0 bg-pearl hover:opacity-100 focus-within:opacity-100"
+                          >
+                            <span>Change</span>
+                            <span className="sr-only"> user photo</span>
+                            <input
+                              type="file"
+                              id="desktop-user-photo"
+                              name="user-photo"
+                              onChange={uploadAvatar}
+                              className="absolute inset-0 w-full h-full border-gray-300 rounded-md opacity-0 cursor-pointer "
+                            />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                      <div>
+                        <label
+                          htmlFor="desktop-user-background"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          Background
+                        </label>
+                      </div>
+                      <div className="flex flex-col items-center space-y-6 lg:space-y-0 lg:flex-row">
+                        <div className="relative overflow-hidden pt-4 pb-4">
+                          <img
+                            className="relative w-full h-40"
+                            src={background}
+                            alt={name || user.username}
+                          />
+                          <label
+                            htmlFor="desktop-user-background"
+                            className="absolute inset-0 flex items-center justify-center w-full h-full text-sm font-medium text-white bg-opacity-75 opacity-0 bg-pearl hover:opacity-100 focus-within:opacity-100"
+                          >
+                            <span>Change</span>
+                            <span className="sr-only"> user background</span>
+                            <input
+                              type="file"
+                              id="desktop-user-background"
+                              name="user-background"
+                              onChange={uploadBackground}
+                              className="absolute inset-0 w-full h-full border-gray-300 rounded-md opacity-0 cursor-pointer "
+                            />
+                          </label>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                          <label
+                            htmlFor="backgroundOpacity"
+                            className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                          >
+                            Show background overlay
+                          </label>
+                          <input
+                            type="checkbox"
+                            name="backgroundOpacity"
+                            id="backgroundOpacity"
+                            defaultChecked={backgroundOpacity}
+                            className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                            onChange={e =>
+                              setBackgroundOpacity(!!e.currentTarget.checked)
+                            }
+                          />
+                        </div>
+                        <span className="text-xs text-santa">
+                          if this is checked, an overlay will be displayed above
+                          the background.
+                        </span>
                       </div>
                     </div>
                     <div>
@@ -113,6 +388,7 @@ const AdminPage = () => {
                           defaultValue={name}
                           className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
                           placeholder="Your Full Name"
+                          onChange={e => setName(e.currentTarget.value)}
                         />
                       </div>
                       <span className="text-xs text-santa">
@@ -135,6 +411,7 @@ const AdminPage = () => {
                           defaultValue={location}
                           className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
                           placeholder="Your Location"
+                          onChange={e => setLocation(e.currentTarget.value)}
                         />
                       </div>
                     </div>
@@ -153,6 +430,7 @@ const AdminPage = () => {
                           defaultValue={headline}
                           className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
                           placeholder="Profile Headline"
+                          onChange={e => setHeadline(e.currentTarget.value)}
                         />
                       </div>
                       <span className="text-xs text-santa">
@@ -175,6 +453,7 @@ const AdminPage = () => {
                           placeholder="Bio..."
                           required={true}
                           defaultValue={bio}
+                          onChange={e => setBio(e.currentTarget.value)}
                         ></textarea>
                       </div>
                       <span className="text-xs text-santa">
@@ -248,98 +527,248 @@ const AdminPage = () => {
                           Only if needed.{' '}
                         </span>
                       </div>
-                      <div>
-                        <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
-                          <label
-                            htmlFor="location"
-                            className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
-                          >
-                            Portoflio Password
-                          </label>
-                          <input
-                            type="password"
-                            name="portfolio-password"
-                            id="portfolio-password"
-                            className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
-                            placeholder="portfoliopassword"
-                          />
-                        </div>
-                        <span className="text-xs text-santa">
-                          {' '}
-                          Only if needed.{' '}
-                        </span>
-                      </div>
-                      <div>
-                        <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
-                          <label
-                            htmlFor="location"
-                            className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
-                          >
-                            Portoflio Password
-                          </label>
-                          <input
-                            type="password"
-                            name="portfolio-password"
-                            id="portfolio-password"
-                            className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
-                            placeholder="portfoliopassword"
-                          />
-                        </div>
-                        <span className="text-xs text-santa">
-                          {' '}
-                          Only if needed.{' '}
-                        </span>
-                      </div>
-                      <div>
-                        <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
-                          <label
-                            htmlFor="location"
-                            className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
-                          >
-                            Portoflio Password
-                          </label>
-                          <input
-                            type="password"
-                            name="portfolio-password"
-                            id="portfolio-password"
-                            className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
-                            placeholder="portfoliopassword"
-                          />
-                        </div>
-                        <span className="text-xs text-santa">
-                          {' '}
-                          Only if needed.{' '}
-                        </span>
-                      </div>
-                      <div>
-                        <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
-                          <label
-                            htmlFor="location"
-                            className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
-                          >
-                            Portoflio Password
-                          </label>
-                          <input
-                            type="password"
-                            name="portfolio-password"
-                            id="portfolio-password"
-                            className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
-                            placeholder="portfoliopassword"
-                          />
-                        </div>
-                        <span className="text-xs text-santa">
-                          {' '}
-                          Only if needed.{' '}
-                        </span>
-                      </div>
-                      <div className="flex mt-12">
-                        <button
-                          type="submit"
-                          className="block px-8 py-3 text-base font-medium text-center text-white transition duration-500 ease-in-out transform tems-center bg-majorelly rounded-xl hover:bg-gov focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    </div>
+
+                    <div className="pb-6 border-b border-river">
+                      <h3 className="text-lg font-normal leading-6 text-white">
+                        Socials
+                      </h3>
+                    </div>
+                    <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
+                          htmlFor="email"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
                         >
-                          Save profile
-                        </button>
+                          Email Address
+                        </label>
+                        <input
+                          type="text"
+                          name="email"
+                          id="email"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Enter your address"
+                          defaultValue={email}
+                          onChange={e => setEmail(e.currentTarget.value)}
+                        />
                       </div>
+                    </div>
+                    <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
+                          htmlFor="facebook"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          Facebook Page URL
+                        </label>
+                        <input
+                          type="text"
+                          name="facebook"
+                          id="facebook"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Enter your URL"
+                          defaultValue={facebook}
+                          onChange={e => setFacebook(e.currentTarget.value)}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
+                          htmlFor="instagram"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          Instagram Username
+                        </label>
+                        <input
+                          type="text"
+                          name="instagram"
+                          id="instagram"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Enter your username"
+                          defaultValue={instagram}
+                          onChange={e => setInstagram(e.currentTarget.value)}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
+                          htmlFor="twitter"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          Twitter Handle
+                        </label>
+                        <input
+                          type="text"
+                          name="twitter"
+                          id="twitter"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Enter your username"
+                          defaultValue={twitter}
+                          onChange={e => setTwitter(e.currentTarget.value)}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
+                          htmlFor="youtube"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          YouTube URL
+                        </label>
+                        <input
+                          type="text"
+                          name="youtube"
+                          id="youtube"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Enter your URL"
+                          defaultValue={youtube}
+                          onChange={e => setYoutube(e.currentTarget.value)}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
+                          htmlFor="linkedin"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          LinkedIn URL
+                        </label>
+                        <input
+                          type="text"
+                          name="linkedin"
+                          id="linkedin"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Enter your URL"
+                          defaultValue={linkedin}
+                          onChange={e => setLinkedin(e.currentTarget.value)}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
+                          htmlFor="whatsapp"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          WhatsApp URL
+                        </label>
+                        <input
+                          type="text"
+                          name="whatsapp"
+                          id="whatsapp"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Enter your URL"
+                          defaultValue={whatsapp}
+                          onChange={e => setWhatsapp(e.currentTarget.value)}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
+                          htmlFor="telegram"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          Telegram URL
+                        </label>
+                        <input
+                          type="text"
+                          name="telegram"
+                          id="telegram"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Enter your URL"
+                          defaultValue={telegram}
+                          onChange={e => setTelegram(e.currentTarget.value)}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
+                          htmlFor="signal"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          Signal URL
+                        </label>
+                        <input
+                          type="text"
+                          name="signal"
+                          id="signal"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Enter your URL"
+                          defaultValue={signal}
+                          onChange={e => setSignal(e.currentTarget.value)}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
+                          htmlFor="twitch"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          Twitch URL
+                        </label>
+                        <input
+                          type="text"
+                          name="twitch"
+                          id="twitch"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Enter your URL"
+                          defaultValue={twitch}
+                          onChange={e => setTwitch(e.currentTarget.value)}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
+                          htmlFor="pinterest"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          Pinterest URL
+                        </label>
+                        <input
+                          type="text"
+                          name="pinterest"
+                          id="pinterest"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Enter your URL"
+                          defaultValue={pinterest}
+                          onChange={e => setPinterest(e.currentTarget.value)}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
+                          htmlFor="tiktok"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          Tiktok URL
+                        </label>
+                        <input
+                          type="text"
+                          name="tiktok"
+                          id="tiktok"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Enter your URL"
+                          defaultValue={tiktok}
+                          onChange={e => setTiktok(e.currentTarget.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex mt-12">
+                      <button
+                        type="submit"
+                        className="block px-8 py-3 text-base font-medium text-center text-white transition duration-500 ease-in-out transform tems-center bg-majorelly rounded-xl hover:bg-gov focus:outline-none focus:ring-2 focus:ring-offset-2"
+                      >
+                        Save profile
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -351,88 +780,12 @@ const AdminPage = () => {
                     username: user.username,
                     fullname: name,
                     avatar,
-                    background:
-                      'https://pbs.twimg.com/profile_banners/353849936/1638917863/1500x500',
-                    backgroundOpacity: true,
-                    headline,
+                    background,
+                    backgroundOpacity,
+                    headline: headline || name,
                     bio,
-                    links: [
-                      {
-                        href: 'https://nicholasgriffin.dev',
-                        title: 'Personal Site',
-                        external: true,
-                        type: 'primary',
-                      },
-                      {
-                        href: 'https://nicholasgriffin.dev/projects',
-                        title: 'Projects',
-                        external: true,
-                        type: 'secondary',
-                      },
-                      {
-                        href: 'https://nicholasgriffin.dev/blog',
-                        title: 'Blog',
-                        external: true,
-                        type: 'secondary',
-                      },
-                    ],
-                    social: [
-                      {
-                        username: 'ngriffin_uk',
-                        external: true,
-                        network: 'twitter',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'facebook',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'whatsapp',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'linkedin',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'telegram',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'reddit',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'pinterest',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'instagram',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'youtube',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'twitch',
-                      },
-                      {
-                        username: '100072789687102',
-                        external: true,
-                        network: 'email',
-                      },
-                    ],
+                    links: links,
+                    social: socials,
                   }}
                 />
               </div>

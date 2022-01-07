@@ -15,6 +15,19 @@ export interface UserAttributes {
   address: string;
   headline: string;
   bio: string;
+  links: string;
+  background: string;
+  backgroundOpacity: string;
+  instagram: string;
+  twitter: string;
+  youtube: string;
+  linkedin: string;
+  whatsapp: string;
+  telegram: string;
+  signal: string;
+  twitch: string;
+  pinterest: string;
+  tiktok: string;
 }
 
 export interface CognitoUserExt extends CognitoUser {
