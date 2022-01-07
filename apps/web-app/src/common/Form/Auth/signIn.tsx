@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Auth from '@aws-amplify/auth';
+import { Logger } from '@aws-amplify/core';
 
 import AuthError from './error';
 import Link from '@/common/Link';
@@ -12,6 +13,8 @@ interface SignInInput {
 }
 
 export default function SignInForm() {
+  const logger = new Logger('account');
+
   const router = useRouter();
   const [showError, setShowError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -23,7 +26,7 @@ export default function SignInForm() {
       const user = await Auth.signIn(data.username, data.password);
       return user;
     } catch (error) {
-      console.error('error signing up:', error);
+      logger.error('error signing up:', error);
       if (error instanceof Error) {
         setErrorMessage(error?.message);
       }

@@ -1,5 +1,8 @@
 import 'tailwindcss/tailwind.css';
 import type { AppProps } from 'next/app';
+import Auth from '@aws-amplify/auth';
+import { Logger } from '@aws-amplify/core';
+import Amplify from 'aws-amplify';
 
 import { GlobalStyle } from '@/styles/global';
 import { ApolloProvider } from '@apollo/client';
@@ -7,9 +10,9 @@ import { useApollo } from '@/apollo/client';
 import AuthContext from '@/context/AuthContext';
 import { Header } from '@/common/Header';
 
-import Auth from '@aws-amplify/auth';
-import Amplify from 'aws-amplify';
 import awsconfig from '@/config';
+
+const logger = new Logger('app');
 
 const isLocalhost = process.env.NODE_ENV == 'development';
 
@@ -40,7 +43,7 @@ Amplify.configure({
       const token = (await Auth.currentSession()).idToken.jwtToken;
       return { Authorization: token };
     } catch (e) {
-      console.error(e);
+      logger.error(e);
       return {};
     }
   },

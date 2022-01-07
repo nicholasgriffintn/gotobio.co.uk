@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import Auth from '@aws-amplify/auth';
+import { Logger } from '@aws-amplify/core';
 import AuthError from './error';
 
 interface VerifyInput {
@@ -18,6 +19,8 @@ export default function ConfirmAccountForm({
   passedThroughEmail: string;
   passedThroughPassword: string;
 }) {
+  const logger = new Logger('account');
+
   const router = useRouter();
   const { register, handleSubmit } = useForm<VerifyInput>();
 
@@ -37,7 +40,7 @@ export default function ConfirmAccountForm({
         throw new Error('No username or code was provided');
       }
     } catch (error) {
-      console.error('error verifying:', error);
+      logger.error('error verifying:', error);
     }
   };
 
@@ -71,7 +74,7 @@ export default function ConfirmAccountForm({
         await Auth.resendSignUp(username);
         setResent(true);
       } catch (err) {
-        console.error('error resending code: ', err);
+        logger.error('error resending code: ', err);
       }
     }
   };

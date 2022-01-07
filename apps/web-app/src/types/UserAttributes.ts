@@ -7,6 +7,14 @@ export interface UserAttributes {
   name: string;
   updated_at: string;
   picture: string;
+  birthdate: string;
+  gender: string;
+  phone_number: string;
+  preferred_username: string;
+  website: string;
+  address: string;
+  headline: string;
+  bio: string;
 }
 
 export interface CognitoUserExt extends CognitoUser {

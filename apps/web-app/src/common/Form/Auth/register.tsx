@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Auth from '@aws-amplify/auth';
+import { Logger } from '@aws-amplify/core';
 
 import AuthError from './error';
 import Link from '@/common/Link';
@@ -13,6 +14,8 @@ interface SignUpInput {
 }
 
 export default function RegisterForm() {
+  const logger = new Logger('account');
+
   const [phase, setPhase] = useState<number>(1);
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
@@ -33,7 +36,7 @@ export default function RegisterForm() {
       });
       return user;
     } catch (error) {
-      console.error('error signing up:', error);
+      logger.error('error signing up:', error);
       if (error instanceof Error) {
         setErrorMessage(error?.message);
       }

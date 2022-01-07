@@ -1,10 +1,13 @@
 import { useEffect } from 'react';
 import Auth from '@aws-amplify/auth';
 import { useRouter } from 'next/router';
+import { Logger } from '@aws-amplify/core';
 
 import PageLayout from '@/layout/main';
 
 const SignOutPage = () => {
+  const logger = new Logger('account');
+
   const router = useRouter();
 
   const trySignOut = async () => {
@@ -12,7 +15,7 @@ const SignOutPage = () => {
       const user = await Auth.signOut();
       return user;
     } catch (error) {
-      console.error('error signing out!:', error);
+      logger.error('error signing out!:', error);
     }
   };
 
@@ -22,7 +25,7 @@ const SignOutPage = () => {
 
       router.push(`/sign-in`);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }, []);
 

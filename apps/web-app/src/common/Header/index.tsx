@@ -29,7 +29,7 @@ export const Header = () => {
                           ? `https://www.gravatar.com/avatar/${user.attributes.email}`
                           : `https://eu.ui-avatars.com/api/?name=${user.username}`
                       }
-                      alt={user.username}
+                      alt={user?.attributes?.name || user.username}
                       className="rounded-full h-full w-full overflow-hidden shadow"
                     />
                   </div>

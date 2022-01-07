@@ -1,6 +1,14 @@
 import PageLayout from '@/layout/main';
+import { useUser } from '@/context/AuthContext';
+import ProfileComponent from '@/common/Profile';
 
 const AdminPage = () => {
+  const { user } = useUser();
+
+  if (!user || !user.username) {
+    return <></>;
+  }
+
   return (
     <PageLayout
       pageTitle="Manage your Bio"
@@ -11,59 +19,120 @@ const AdminPage = () => {
       }}
       showBanner={false}
     >
-      <section className="relative w-full">
-        <div className="relative items-center w-full px-5 pt-12 mx-auto md:px-12 lg:px-20">
-          <div>
-            <div className="px-4 mx-auto sm:px-6 lg:px-0">
-              <div className="sm:flex sm:items-end sm:space-x-5">
-                <div className="flex">
-                  <img
-                    className="w-12 h-12 rounded-full ring-4 ring-cinder"
-                    src="./images/avatar.png"
-                    alt=""
-                  />
-                </div>
-                <div className="mt-6 sm:flex-1 sm:min-w-0 lg:mt-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1 lg:pb-0">
-                  <div className="flex-1 min-w-0 mt-6 space-y-2 lg:mt-0 sm:hidden md:block">
-                    <h3 className="text-xl font-normal leading-snug tracking-tight text-white ">
-                      Michael Andreuzza <span className="text-santa">/</span>{' '}
-                      Edit Profile
-                    </h3>
-                    <p className="text-sm font-normal text-santa">
-                      Set up your presence and hiring needs
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="relative w-full">
+      <section className="relative w-full pt-4">
         <div className="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-20">
           <div className="space-y-4 overflow-hidden lg:p-6 bg-cinder rounded-3xl">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
-              <div className="hidden p-6 bg-pearl rounded-2xl lg:block">
-                <nav className="space-y-8" aria-label="Sidebar">
-                  <a
-                    href="./profile.html"
-                    className="items-center block w-full text-base font-medium transition duration-500 ease-in-out transform  text-santa hover:text-moody focus:outline-none"
-                    aria-current="page"
-                  >
-                    <span> Profile </span>
-                  </a>
-                </nav>
+              <div className="relative hidden overflow-hidden bg-pearl rounded-2xl lg:block">
+                <ProfileComponent
+                  profile={{
+                    username: user.username,
+                    fullname: user?.attributes?.name,
+                    avatar: user?.attributes?.picture
+                      ? user.attributes.picture
+                      : user?.attributes?.email
+                      ? `https://www.gravatar.com/avatar/${user.attributes.email}`
+                      : `https://eu.ui-avatars.com/api/?name=${user.username}`,
+                    background:
+                      'https://pbs.twimg.com/profile_banners/353849936/1638917863/1500x500',
+                    backgroundOpacity: true,
+                    headline: 'Nicholas Griffin',
+                    bio: 'Senior Software Engineer at the BBC and Full Time Technology Nerd/ Boomer. All opinions are my own.',
+                    links: [
+                      {
+                        href: 'https://nicholasgriffin.dev',
+                        title: 'Personal Site',
+                        external: true,
+                        type: 'primary',
+                      },
+                      {
+                        href: 'https://nicholasgriffin.dev/projects',
+                        title: 'Projects',
+                        external: true,
+                        type: 'secondary',
+                      },
+                      {
+                        href: 'https://nicholasgriffin.dev/blog',
+                        title: 'Blog',
+                        external: true,
+                        type: 'secondary',
+                      },
+                    ],
+                    social: [
+                      {
+                        username: 'ngriffin_uk',
+                        external: true,
+                        network: 'twitter',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'facebook',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'whatsapp',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'linkedin',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'telegram',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'reddit',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'pinterest',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'instagram',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'youtube',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'twitch',
+                      },
+                      {
+                        username: '100072789687102',
+                        external: true,
+                        network: 'email',
+                      },
+                    ],
+                  }}
+                />
               </div>
               <div className="col-span-3 space-y-6">
-                <div>
+                <div className="max-h-screen overflow-scroll">
                   <div className="p-6 space-y-8 bg-pearl rounded-2xl">
                     <div className="flex flex-col items-center space-y-6 lg:space-y-0 lg:flex-row">
                       <div className="relative overflow-hidden rounded-full">
                         <img
                           className="relative w-20 h-20 rounded-full"
-                          src="./images/avatar.png"
-                          alt=""
+                          src={
+                            user?.attributes?.picture
+                              ? user.attributes.picture
+                              : user?.attributes?.email
+                              ? `https://www.gravatar.com/avatar/${user.attributes.email}`
+                              : `https://eu.ui-avatars.com/api/?name=${user.username}`
+                          }
+                          alt={user?.attributes?.name || user.username}
                         />
                         <label
                           htmlFor="desktop-user-photo"
@@ -79,82 +148,89 @@ const AdminPage = () => {
                           />
                         </label>
                       </div>
-                      <div className="flex flex-col w-full max-w-2xl gap-2 lg:flex-row">
-                        <div className="rounded-lg sm:mt-0 lg:ml-3 ">
-                          <a className="block px-8 py-3 text-base font-medium text-center text-white transition duration-500 ease-in-out transform lg:px-10 tems-center bg-majorelly rounded-xl hover:bg-gov focus:outline-none focus:ring-2 focus:ring-offset-2">
-                            Upload new picture
-                          </a>
-                        </div>
-                        <div className="mt-3 rounded-lg sm:mt-0 sm:ml-3">
-                          <a className="items-center block w-full px-8 py-3 text-base font-medium text-center text-white transition duration-500 ease-in-out transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-river">
-                            Cancel
-                          </a>
-                        </div>
-                      </div>
                     </div>
                     <div>
                       <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
                         <label
-                          htmlFor="member"
+                          htmlFor="name"
                           className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
                         >
                           Name
                         </label>
                         <input
                           type="text"
-                          name="member"
-                          id="member"
+                          name="name"
+                          id="name"
                           className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
-                          placeholder="name"
+                          placeholder="Your Full Name"
                         />
                       </div>
                       <span className="text-xs text-santa">
-                        We enjoy real names around here, so people know who’s
-                        who.
+                        Please enter your full name here, we use it for
+                        displaying your name in the app.
                       </span>
                     </div>
                     <div>
                       <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
                         <label
-                          htmlFor="location"
+                          htmlFor="address"
                           className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
                         >
-                          Locaton
+                          Location
                         </label>
                         <input
                           type="text"
-                          name="location"
-                          id="location"
+                          name="address"
+                          id="address"
                           className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
-                          placeholder="location"
+                          placeholder="Your Location"
                         />
                       </div>
                     </div>
                     <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
+                          htmlFor="headline"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          Headline
+                        </label>
+                        <input
+                          type="text"
+                          name="headline"
+                          id="headline"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Profile Headline"
+                        />
+                      </div>
+                      <span className="text-xs text-santa">
+                        Enter a headline for your profile here, if empty, the
+                        headline will be your name or username.
+                      </span>
+                    </div>
+                    <div>
                       <div className="relative h-full px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
                         <label
-                          htmlFor="email"
+                          htmlFor="bio"
                           className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
                         >
                           <span>Bio</span>
                         </label>
                         <textarea
                           className="block w-full h-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
-                          id="description"
-                          type="text"
-                          name="description"
+                          id="bio"
+                          name="bio"
                           placeholder="Bio..."
                           required={true}
                         ></textarea>
                       </div>
                       <span className="text-xs text-santa">
-                        Brief description for your profile. URLs are
-                        hyperlinked.
+                        This should be a brief description for your profile.
                       </span>
                     </div>
                     <div className="pb-6 border-b border-river">
                       <h3 className="text-lg font-normal leading-6 text-white">
-                        Online Presence
+                        Links
                       </h3>
                     </div>
                     <div>
@@ -196,6 +272,90 @@ const AdminPage = () => {
                         </div>
                         <span className="text-xs text-santa">
                           Only shared with potential employers.
+                        </span>
+                      </div>
+                      <div>
+                        <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                          <label
+                            htmlFor="location"
+                            className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                          >
+                            Portoflio Password
+                          </label>
+                          <input
+                            type="password"
+                            name="portfolio-password"
+                            id="portfolio-password"
+                            className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                            placeholder="portfoliopassword"
+                          />
+                        </div>
+                        <span className="text-xs text-santa">
+                          {' '}
+                          Only if needed.{' '}
+                        </span>
+                      </div>
+                      <div>
+                        <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                          <label
+                            htmlFor="location"
+                            className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                          >
+                            Portoflio Password
+                          </label>
+                          <input
+                            type="password"
+                            name="portfolio-password"
+                            id="portfolio-password"
+                            className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                            placeholder="portfoliopassword"
+                          />
+                        </div>
+                        <span className="text-xs text-santa">
+                          {' '}
+                          Only if needed.{' '}
+                        </span>
+                      </div>
+                      <div>
+                        <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                          <label
+                            htmlFor="location"
+                            className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                          >
+                            Portoflio Password
+                          </label>
+                          <input
+                            type="password"
+                            name="portfolio-password"
+                            id="portfolio-password"
+                            className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                            placeholder="portfoliopassword"
+                          />
+                        </div>
+                        <span className="text-xs text-santa">
+                          {' '}
+                          Only if needed.{' '}
+                        </span>
+                      </div>
+                      <div>
+                        <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                          <label
+                            htmlFor="location"
+                            className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                          >
+                            Portoflio Password
+                          </label>
+                          <input
+                            type="password"
+                            name="portfolio-password"
+                            id="portfolio-password"
+                            className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                            placeholder="portfoliopassword"
+                          />
+                        </div>
+                        <span className="text-xs text-santa">
+                          {' '}
+                          Only if needed.{' '}
                         </span>
                       </div>
                       <div>

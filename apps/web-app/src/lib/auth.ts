@@ -1,10 +1,13 @@
 import Iron from '@hapi/iron';
 import { serialize, parse } from 'cookie';
 import Auth from '@aws-amplify/auth';
+import { Logger } from '@aws-amplify/core';
 
 import { TOKEN_NAME, TOKEN_SECRET } from '@/lib/constants';
 
 export const MAX_AGE = 60 * 60 * 8; // 8 hours
+
+const logger = new Logger('account');
 
 export function setTokenCookie(res, token) {
   const cookie = serialize(TOKEN_NAME, token, {
@@ -73,7 +76,7 @@ export async function getCognitoAuthenticatedUser() {
 
     return user;
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 }
 
@@ -83,6 +86,6 @@ export async function getCognitoSession() {
 
     return session;
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 }

@@ -9,7 +9,7 @@ const HomePage = () => {
       pageTitle={
         !user
           ? 'Connect all of your audiences with just one link'
-          : `Welcome back ${user.username}!`
+          : `Welcome back ${user?.attributes?.name || user.username}!`
       }
       pageSummary={
         !user
