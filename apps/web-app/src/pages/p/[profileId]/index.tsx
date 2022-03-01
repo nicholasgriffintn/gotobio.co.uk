@@ -53,19 +53,19 @@ export async function getServerSideProps({ params }) {
               bio: "This is a demo of Go to Bio, it's pretty awesome!",
               links: [
                 {
-                  href: 'https://gottobio.co.uk',
+                  href: 'https://gotobio.co.uk',
                   title: 'Homepage',
                   external: true,
                   type: 'primary',
                 },
                 {
-                  href: 'https://gottobio.co.uk/sign-up',
+                  href: 'https://gotobio.co.uk/sign-up',
                   title: 'Sign Up',
                   external: true,
                   type: 'secondary',
                 },
                 {
-                  href: 'https://gottobio.co.uk/sign-in',
+                  href: 'https://gotobio.co.uk/sign-in',
                   title: 'Sign In',
                   external: true,
                   type: 'secondary',
