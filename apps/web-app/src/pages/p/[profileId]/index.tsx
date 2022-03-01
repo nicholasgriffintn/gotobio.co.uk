@@ -19,10 +19,10 @@ const ProfilePage = props => {
 
   return (
     <PageLayout
-      pageTitle="Nicholas Griffin"
+      pageTitle="Go to Bio"
       pageSummary="#AwesomeBio"
       seo={{
-        title: 'Nicholas Griffin',
+        title: 'Go to Bio',
         description: '#AwesomeBio',
       }}
       showBanner={false}
@@ -42,88 +42,88 @@ export async function getServerSideProps({ params }) {
       profile:
         profileId === 'demo'
           ? {
-              username: 'ngriffin',
-              fullname: 'Nicholas Griffin',
+              username: 'demo',
+              fullname: 'Demo Avatar',
               avatar:
-                'https://pbs.twimg.com/profile_images/1468372517538701316/HnQ_WZVg_400x400.jpg',
+                'https://cdn.nicholasgriffin.dev/profile-demo/36748616061539.jpg',
               background:
-                'https://pbs.twimg.com/profile_banners/353849936/1638917863/1500x500',
+                'https://cdn.nicholasgriffin.dev/profile-demo/5488082.jpg',
               backgroundOpacity: true,
-              headline: 'Nicholas Griffin',
-              bio: 'Senior Software Engineer at the BBC and Full Time Technology Nerd/ Boomer. All opinions are my own.',
+              headline: 'Demo',
+              bio: "This is a demo of Go to Bio, it's pretty awesome!",
               links: [
                 {
-                  href: 'https://nicholasgriffin.dev',
-                  title: 'Personal Site',
+                  href: 'https://gottobio.co.uk',
+                  title: 'Homepage',
                   external: true,
                   type: 'primary',
                 },
                 {
-                  href: 'https://nicholasgriffin.dev/projects',
-                  title: 'Projects',
+                  href: 'https://gottobio.co.uk/sign-up',
+                  title: 'Sign Up',
                   external: true,
                   type: 'secondary',
                 },
                 {
-                  href: 'https://nicholasgriffin.dev/blog',
-                  title: 'Blog',
+                  href: 'https://gottobio.co.uk/sign-in',
+                  title: 'Sign In',
                   external: true,
                   type: 'secondary',
                 },
               ],
               social: [
                 {
-                  username: 'ngriffin_uk',
+                  username: 'go_to_bio',
                   external: true,
                   network: 'twitter',
                 },
                 {
-                  username: '100072789687102',
+                  username: 'go_to_bio',
                   external: true,
                   network: 'facebook',
                 },
                 {
-                  username: '100072789687102',
+                  username: 'go_to_bio',
                   external: true,
                   network: 'whatsapp',
                 },
                 {
-                  username: '100072789687102',
+                  username: 'go_to_bio',
                   external: true,
                   network: 'linkedin',
                 },
                 {
-                  username: '100072789687102',
+                  username: 'go_to_bio',
                   external: true,
                   network: 'telegram',
                 },
                 {
-                  username: '100072789687102',
+                  username: 'go_to_bio',
                   external: true,
                   network: 'reddit',
                 },
                 {
-                  username: '100072789687102',
+                  username: 'go_to_bio',
                   external: true,
                   network: 'pinterest',
                 },
                 {
-                  username: '100072789687102',
+                  username: 'go_to_bio',
                   external: true,
                   network: 'instagram',
                 },
                 {
-                  username: '100072789687102',
+                  username: 'go_to_bio',
                   external: true,
                   network: 'youtube',
                 },
                 {
-                  username: '100072789687102',
+                  username: 'go_to_bio',
                   external: true,
                   network: 'twitch',
                 },
                 {
-                  username: '100072789687102',
+                  username: 'go_to_bio',
                   external: true,
                   network: 'email',
                 },
