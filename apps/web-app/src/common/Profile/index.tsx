@@ -80,6 +80,24 @@ const ProfileComponent = ({ profile }) => {
                             ? `https://www.facebook.com/profile.php?id=${network.username}`
                             : network.network === 'twitter'
                             ? `https://twitter.com/${network.username}`
+                            : network.network === 'whatsapp'
+                            ? `https://wa.me/${network.username}`
+                            : network.network === 'linkedin'
+                            ? `https://www.linkedin.com/in/${network.username}`
+                            : network.network === 'telegram'
+                            ? `https://t.me/${network.username}`
+                            : network.network === 'reddit'
+                            ? `https://www.reddit.com/r/${network.username}`
+                            : network.network === 'pinterest'
+                            ? `https://www.pinterest.com/${network.username}`
+                            : network.network === 'instagram'
+                            ? `https://www.instagram.com/${network.username}`
+                            : network.network === 'youtube'
+                            ? `https://www.youtube.com/${network.username}`
+                            : network.network === 'twitch'
+                            ? `https://www.twitch.tv/${network.username}`
+                            : network.network === 'email'
+                            ? `mailto:${network.username}`
                             : network.username
                         }`}
                         target="_blank"
@@ -128,7 +146,7 @@ const ProfileComponent = ({ profile }) => {
                           </svg>
                         ) : network.network === 'instagram' ? (
                           <svg
-                            className="w-6 h-6 text-purple-400 fill-current"
+                            className="w-6 h-6 text-pink-400 fill-current"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 448 512"
                           >
@@ -186,14 +204,16 @@ const ProfileComponent = ({ profile }) => {
           ) : null}
         </div>
       </section>
-      {/* <div className="z-50 absolute bottom-0 left-0 w-full pb-4 pt-4 px-4 py-6 sm:px-2 lg:px-6">
-        <a
-          className="w-full inline-block items-center text-base font-medium text-center text-white"
-          href="https://gotobio.co.uk"
-        >
-          <span>Click here to create your Go To Bio link today!</span>
-        </a>
-      </div> */}
+      {profile.username === 'demo' || profile.hideAttributionBanner ? (
+        <div className="z-50 absolute bottom-0 left-0 w-full pb-4 pt-4 px-4 py-6 sm:px-2 lg:px-6">
+          <a
+            className="w-full inline-block items-center text-base font-medium text-center text-white"
+            href="https://gotobio.co.uk"
+          >
+            <span>Click here to create your Go To Bio link today!</span>
+          </a>
+        </div>
+      ) : null}
     </div>
   );
 };
