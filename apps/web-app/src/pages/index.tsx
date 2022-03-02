@@ -35,6 +35,12 @@ const HomePage = () => {
                 type: 'secondary',
                 external: false,
               },
+              {
+                href: '/p/demo',
+                text: 'Demo Profile',
+                type: 'secondary',
+                external: false,
+              },
             ]
           : [
               {
