@@ -1,6 +1,6 @@
 import PageLayout from '@/layout/main';
 import { useUser } from '@/context/AuthContext';
-import AdminPanel from './panel';
+import AdminPanel from '@/common/Admin/panel';
 
 const AdminPage = () => {
   const { user } = useUser();
