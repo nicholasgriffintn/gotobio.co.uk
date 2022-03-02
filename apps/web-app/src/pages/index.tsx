@@ -59,6 +59,14 @@ const HomePage = () => {
       }
     >
       <section></section>
+      <div className="z-50 absolute bottom-0 left-0 w-full pb-4 pt-4 px-4 py-6 sm:px-2 lg:px-6">
+        <a
+          className="w-full inline-block items-center text-base font-medium text-center text-white"
+          href="https://nicholasgriffin.dev/?utm_source=GOTOBIO&utm_medium=FOOTER&utm_campaign=SITE_CREATION"
+        >
+          <span>App by Nicholas Griffin</span>
+        </a>
+      </div>
     </PageLayout>
   );
 };
