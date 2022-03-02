@@ -12,9 +12,9 @@ const AdminPage = () => {
   const { user } = useUser();
 
   const [avatar, setAvatar] = useState('');
-  const [background, setBackground] = useState(
-    'https://pbs.twimg.com/profile_banners/353849936/1638917863/1500x500',
-  );
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [background, setBackground] = useState('');
+  const [backgroundUrl, setBackgroundUrl] = useState('');
   const [backgroundOpacity, setBackgroundOpacity] = useState(true);
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
@@ -43,9 +43,54 @@ const AdminPage = () => {
   const [twitch, setTwitch] = useState('');
   const [pinterest, setPinterest] = useState('');
   const [tiktok, setTiktok] = useState('');
+  const [reddit, setReddit] = useState('');
+
+  function validURL(str) {
+    var pattern = new RegExp(
+      '^(https?:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$',
+      'i',
+    );
+    return !!pattern.test(str);
+  }
+
+  useEffect(() => {
+    async function generateProfilePicUrl(key) {
+      if (validURL(key)) {
+        setAvatarUrl(key);
+      } else {
+        const link = await Storage.get(key);
+
+        setAvatarUrl(link || '');
+      }
+    }
+
+    generateProfilePicUrl(avatar);
+  }, [avatar]);
+
+  useEffect(() => {
+    async function generateProfilePicUrl(key) {
+      if (validURL(key)) {
+        setBackgroundUrl(key);
+      } else {
+        const link = await Storage.get(key);
+
+        setBackgroundUrl(link || '');
+      }
+    }
+
+    generateProfilePicUrl(background);
+  }, [background]);
 
   useEffect(() => {
     if (user) {
+      // TODO: Remove this log
+      console.log(user.attributes);
+
       setAvatar(
         user?.attributes?.picture
           ? user.attributes.picture
@@ -54,55 +99,39 @@ const AdminPage = () => {
           : `https://eu.ui-avatars.com/api/?name=${user.username}`,
       );
       setBackground(
-        user?.attributes?.background ||
-          'https://pbs.twimg.com/profile_banners/353849936/1638917863/1500x500',
+        user?.attributes?.['custom:background']
+          ? user.attributes['custom:background']
+          : '',
       );
       setBackgroundOpacity(
-        user?.attributes?.backgroundOpacity
-          ? Boolean(user.attributes.backgroundOpacity)
+        user?.attributes?.['custom:backgroundOpacity']
+          ? Boolean(user.attributes['custom:backgroundOpacity'])
           : true,
       );
       setName(user?.attributes?.name || '');
       setLocation(user?.attributes?.address || '');
-      setHeadline(user?.attributes?.headline || '');
-      setBio(user?.attributes?.bio || '');
+      setHeadline(user?.attributes?.['custom:headline'] || '');
+      setBio(user?.attributes?.['custom:bio'] || '');
 
       setLinks(
-        user?.attributes?.links
-          ? JSON.parse(user.attributes.links)
-          : [
-              {
-                href: 'https://nicholasgriffin.dev',
-                title: 'Personal Site',
-                external: true,
-                type: 'primary',
-              },
-              {
-                href: 'https://nicholasgriffin.dev/projects',
-                title: 'Projects',
-                external: true,
-                type: 'secondary',
-              },
-              {
-                href: 'https://nicholasgriffin.dev/blog',
-                title: 'Blog',
-                external: true,
-                type: 'secondary',
-              },
-            ],
+        user?.attributes?.['custom:links']
+          ? JSON.parse(user.attributes['custom:links'])
+          : [],
       );
 
       setEmail(user?.attributes?.email || '');
-      setInstagram(user?.attributes?.instagram || '');
-      setTwitter(user?.attributes?.twitter || '');
-      setYoutube(user?.attributes?.youtube || '');
-      setLinkedin(user?.attributes?.linkedin || '');
-      setWhatsapp(user?.attributes?.whatsapp || '');
-      setTelegram(user?.attributes?.telegram || '');
-      setSignal(user?.attributes?.signal || '');
-      setTwitch(user?.attributes?.twitch || '');
-      setPinterest(user?.attributes?.pinterest || '');
-      setTiktok(user?.attributes?.tiktok || '');
+      setTwitter(user?.attributes?.['custom:twitter'] || '');
+      setFacebook(user?.attributes?.['custom:facebook'] || '');
+      setWhatsapp(user?.attributes?.['custom:whatsapp'] || '');
+      setLinkedin(user?.attributes?.['custom:linkedin'] || '');
+      setTelegram(user?.attributes?.['custom:telegram'] || '');
+      setReddit(user?.attributes?.['custom:reddit'] || '');
+      setPinterest(user?.attributes?.['custom:pinterest'] || '');
+      setInstagram(user?.attributes?.['custom:instagram'] || '');
+      setYoutube(user?.attributes?.['custom:youtube'] || '');
+      setTwitch(user?.attributes?.['custom:twitch'] || '');
+      setSignal(user?.attributes?.['custom:signal'] || '');
+      setTiktok(user?.attributes?.['custom:tiktok'] || '');
     }
   }, [user]);
 
@@ -227,17 +256,13 @@ const AdminPage = () => {
   const uploadAvatar = event => {
     if (event?.target?.files?.length > 0) {
       Storage.configure({
-        level: 'protected',
+        level: 'public',
       });
       Storage.put(`avatars/${user.username}`, event.target.files[0], {
         contentType: event.target.files[0].type,
       })
         .then(async result => {
-          console.log(result);
-
-          const signedURL = await Storage.get(result.key);
-
-          setAvatar(signedURL);
+          setAvatar(result.key);
         })
         .catch(err => {
           logger.error(`Cannot uploading file: ${err}`);
@@ -248,17 +273,13 @@ const AdminPage = () => {
   const uploadBackground = event => {
     if (event?.target?.files?.length > 0) {
       Storage.configure({
-        level: 'protected',
+        level: 'public',
       });
       Storage.put(`backgrounds/${user.username}`, event.target.files[0], {
         contentType: event.target.files[0].type,
       })
         .then(async result => {
-          console.log(result);
-
-          const signedURL = await Storage.get(result.key);
-
-          setBackground(signedURL);
+          setBackground(result.key);
         })
         .catch(err => {
           logger.error(`Cannot uploading file: ${err}`);
@@ -296,7 +317,7 @@ const AdminPage = () => {
                         <div className="relative overflow-hidden  pt-4 pb-4 rounded-full">
                           <img
                             className="relative w-20 h-20 rounded-full"
-                            src={avatar}
+                            src={avatarUrl}
                             alt={name || user.username}
                           />
                           <label
@@ -329,7 +350,7 @@ const AdminPage = () => {
                         <div className="relative overflow-hidden pt-4 pb-4">
                           <img
                             className="relative w-full h-40"
-                            src={background}
+                            src={backgroundUrl}
                             alt={name || user.username}
                           />
                           <label
@@ -689,6 +710,25 @@ const AdminPage = () => {
                     <div>
                       <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
                         <label
+                          htmlFor="reddit"
+                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                        >
+                          Reddit URL
+                        </label>
+                        <input
+                          type="text"
+                          name="reddit"
+                          id="reddit"
+                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                          placeholder="Enter your URL"
+                          defaultValue={reddit}
+                          onChange={e => setReddit(e.currentTarget.value)}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                        <label
                           htmlFor="signal"
                           className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
                         >
@@ -779,8 +819,8 @@ const AdminPage = () => {
                   profile={{
                     username: user.username,
                     fullname: name,
-                    avatar,
-                    background,
+                    avatar: avatarUrl,
+                    background: backgroundUrl,
                     backgroundOpacity,
                     headline: headline || name,
                     bio,

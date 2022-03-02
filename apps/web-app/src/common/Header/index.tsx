@@ -1,14 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Storage from '@aws-amplify/storage';
 
 import { useUser } from '@/context/AuthContext';
 
 export const Header = () => {
   const [show2, setShow2] = useState(false);
+  const [avatar, setAvatar] = useState('');
 
   const { user } = useUser();
 
-  if (!user) {
+  useEffect(() => {
+    async function generateProfilePicUrl(key) {
+      if (validURL(key)) {
+        setAvatar(key);
+      } else {
+        const link = await Storage.get(key);
+
+        setAvatar(link || '');
+      }
+    }
+
+    if (user?.attributes?.picture) {
+      generateProfilePicUrl(user?.attributes?.picture);
+    }
+  }, [user?.attributes?.picture]);
+
+  if (!user || !user.username) {
     return <></>;
+  }
+
+  function validURL(str) {
+    var pattern = new RegExp(
+      '^(https?:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$',
+      'i',
+    );
+    return !!pattern.test(str);
   }
 
   return (
@@ -24,7 +55,7 @@ export const Header = () => {
                     <img
                       src={
                         user?.attributes?.picture
-                          ? user.attributes.picture
+                          ? avatar
                           : user?.attributes?.email
                           ? `https://www.gravatar.com/avatar/${user.attributes.email}`
                           : `https://eu.ui-avatars.com/api/?name=${user.username}`
