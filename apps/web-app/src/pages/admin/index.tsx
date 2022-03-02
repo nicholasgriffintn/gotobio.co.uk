@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Logger } from '@aws-amplify/core';
+import Auth from '@aws-amplify/auth';
 import Storage from '@aws-amplify/storage';
 
 import PageLayout from '@/layout/main';
@@ -204,6 +205,13 @@ const AdminPage = () => {
         network: 'telegram',
       });
     }
+    if (reddit) {
+      newSocials.push({
+        ...defaultSocialObject,
+        username: reddit,
+        network: 'reddit',
+      });
+    }
     if (signal) {
       newSocials.push({
         ...defaultSocialObject,
@@ -241,6 +249,7 @@ const AdminPage = () => {
     twitter,
     youtube,
     linkedin,
+    reddit,
     whatsapp,
     telegram,
     signal,
@@ -249,9 +258,60 @@ const AdminPage = () => {
     tiktok,
   ]);
 
-  if (!user || !user.username) {
-    return <></>;
+  async function updateUser() {
+    const user = await Auth.currentAuthenticatedUser();
+    await Auth.updateUserAttributes(user, {
+      'custom:headline': headline,
+      'custom:bio': bio,
+      picture: avatar,
+      address: location,
+      'custom:background': background,
+      'custom:backgroundOpacity': backgroundOpacity.toString(),
+      email,
+      'custom:facebook': facebook,
+      'custom:instagram': instagram,
+      'custom:twitter': twitter,
+      'custom:youtube': youtube,
+      'custom:linkedin': linkedin,
+      'custom:reddit': reddit,
+      'custom:whatsapp': whatsapp,
+      'custom:telegram': telegram,
+      'custom:signal': signal,
+      'custom:twitch': twitch,
+      'custom:tiktok': tiktok,
+      'custom:pinterest': pinterest,
+      'custom:socials': JSON.stringify(socials),
+      'custom:links': JSON.stringify(links),
+    });
   }
+
+  if (!user || !user.username) {
+    return (
+      <PageLayout
+        pageTitle="Please sign in"
+        pageSummary="To manage your bio, please sign in"
+        seo={{
+          title: 'Please sign in',
+          description: 'To manage your bio, please sign in',
+        }}
+        showBanner={true}
+      ></PageLayout>
+    );
+  }
+
+  /* if (!user.attributes.email_verified) {
+    return (
+      <PageLayout
+        pageTitle="Please verify your email"
+        pageSummary="Check your inbox for a link!"
+        seo={{
+          title: 'Please verify your email',
+          description: 'Check your inbox for a link!',
+        }}
+        showBanner={true}
+      ></PageLayout>
+    );
+  } */
 
   const uploadAvatar = event => {
     if (event?.target?.files?.length > 0) {
@@ -486,66 +546,69 @@ const AdminPage = () => {
                         Links
                       </h3>
                     </div>
-                    <div>
-                      <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
-                        <label
-                          htmlFor="location"
-                          className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
-                        >
-                          Personal Site
-                        </label>
-                        <input
-                          type="text"
-                          name="personal-site"
-                          id="personal-site"
-                          className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
-                          placeholder="personal website"
-                        />
-                      </div>
-                      <span className="text-xs text-santa">
-                        Your home page, blog, or company site.
-                      </span>
-                    </div>
                     <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
                       <div>
                         <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
                           <label
-                            htmlFor="location"
+                            htmlFor="link-title"
                             className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
                           >
-                            Portoflio URL
+                            Link Title
                           </label>
                           <input
                             type="text"
-                            name="portfolio-url"
-                            id="portfolio-url"
+                            name="link-title"
+                            id="link-title"
                             className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
-                            placeholder="portfolio url"
+                            placeholder="Personal Website"
                           />
                         </div>
                         <span className="text-xs text-santa">
-                          Only shared with potential employers.
+                          A title for this link
                         </span>
                       </div>
                       <div>
                         <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
                           <label
-                            htmlFor="location"
+                            htmlFor="link-url"
                             className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
                           >
-                            Portoflio Password
+                            Link URL
                           </label>
                           <input
-                            type="password"
-                            name="portfolio-password"
-                            id="portfolio-password"
+                            type="text"
+                            name="link-url"
+                            id="link-url"
                             className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
-                            placeholder="portfoliopassword"
+                            placeholder="https://example.com"
                           />
                         </div>
                         <span className="text-xs text-santa">
-                          {' '}
-                          Only if needed.{' '}
+                          The URL for this link
+                        </span>
+                      </div>
+                      <div>
+                        <div className="relative px-3 py-2 border-2 border-gray-300 rounded-xl focus-within:ring-1 focus-within:ring-majorelle focus-within:border-moody">
+                          <label
+                            htmlFor="link-primary"
+                            className="absolute inline-block px-1 -mt-px text-xs font-medium text-white bg-pearl -top-2 left-2"
+                          >
+                            Is this a primary link?
+                          </label>
+                          <input
+                            type="checkbox"
+                            name="link-primary"
+                            id="link-primary"
+                            defaultChecked={backgroundOpacity}
+                            className="block w-full py-1 text-white bg-transparent border-0 placeholder-river focus:ring-0 sm:text-sm"
+                            onChange={e =>
+                              setBackgroundOpacity(!!e.currentTarget.checked)
+                            }
+                          />
+                        </div>
+                        <span className="text-xs text-santa">
+                          if this is checked, the link will be displayed as a
+                          primary button.
                         </span>
                       </div>
                     </div>
@@ -805,6 +868,7 @@ const AdminPage = () => {
                     <div className="flex mt-12">
                       <button
                         type="submit"
+                        onClick={() => updateUser()}
                         className="block px-8 py-3 text-base font-medium text-center text-white transition duration-500 ease-in-out transform tems-center bg-majorelly rounded-xl hover:bg-gov focus:outline-none focus:ring-2 focus:ring-offset-2"
                       >
                         Save profile
