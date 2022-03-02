@@ -24,7 +24,7 @@ const HomePage = () => {
         !user
           ? [
               {
-                href: '/register',
+                href: '/sign-up',
                 text: 'Get Started',
                 type: 'primary',
                 external: false,
